@@ -2,8 +2,8 @@ const {Schema, model} = require('mongoose');
 
 const wishlistBookSchema = new Schema({
     bookTitle: String,
-    authorName: String,
-    isbn: Number
+    authorName: Array,
+    bookId: String
 
 })
 

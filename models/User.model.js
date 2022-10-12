@@ -11,6 +11,14 @@ const userSchema = new Schema(
       required: true,
     },
     email: String,
+    wishlist: [{
+        type: Schema.Types.ObjectId,
+        ref: "WishlistBook"
+      }],
+    finishedBooks: [{
+        type: Schema.Types.ObjectId,
+        ref: "FinishedBook"
+      }]
   },
   {
     timeseries: true,

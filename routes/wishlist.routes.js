@@ -1,32 +1,43 @@
-const { router } = require('express');
-const router = new Router();
-const isLoggedIn = require('');
+const express = require('express');
+const router = express.Router();
+const isLoggedIn = require('../middleware/isLoggedIn');
 const User = require('../models/User.model');
 const WishlistBook = require('../models/WishlistBook.model');
 
 
-router.post('/profile', isLoggedIn, (req, res, next) => {
+router.post('/addToWishlist', isLoggedIn, (req, res, next) => {
     
-    const {bookTitle, authorName, isbn } = req.body
+    const {bookTitle, authorName, bookId } = req.body
 
     WishlistBook.create({
         bookTitle,
         authorName,
-        isbn
+        bookId
     })
     .then(newWLBook => {
-        console.log(newWLBook._id, "new book id")
-        console.log(req.session.user._id, 'userid')
-        return User.findByIdAndUpdate(req.session.user._id, 
-            {
-                $addToSet: {watchlistBooks: newWLBook._id}
-            }, { new: true })
+        console.log(newWLBook)
+        User.findByIdAndUpdate(
+            { _id: req.user._id}, 
+            { $addToSet: {wishlist: newWLBook}}
+            )
+            .then((result) => {
+                console.log(result)
+            })
+            .cath((err) => {
+                console.log(err)
+            })
+        //     {
+        //         $addToSet: {watchlistBooks: newWLBook._id}
+        //     }, { new: true })
     })
-    .then(updatedUser => {
-        console.log('updated user', updatedUser)
-        // res.redirect('/profile')
-        res.json({ message: 'New wishlist book added to user.' })
+    // .then(updatedUser => {
+    //     console.log('updated user', updatedUser)
+    //     // res.redirect('/profile')
+    //     res.json({ message: 'New wishlist book added to user.' })
         
+    // })
+    .catch((err) => {
+        console.log(err)
     })
 
     // router.get('/profile', (req, res, next) => {
@@ -41,4 +52,7 @@ router.post('/profile', isLoggedIn, (req, res, next) => {
     
 })
 
+router.get('/myWishList')
+
+module.exports = router
 
