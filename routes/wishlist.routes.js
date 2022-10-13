@@ -49,13 +49,13 @@ router.post("/addToWishlist", isLoggedIn, (req, res, next) => {
   // })
 });
 
-router.get("/", isLoggedIn, (req, res, next) => {
-  WishlistBook.find({ _id: req.WishlistBook._id })
-    .populate({
-      path: "wishlist",
-    })
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err));
-});
+// router.get("/", isLoggedIn, (req, res, next) => {
+//   WishlistBook.find({ _id: req.WishlistBook._id })
+//     .populate({
+//       path: "wishlist",
+//     })
+//     .then((res) => console.log(res))
+//     .catch((err) => console.log(err));
+// });
 
 module.exports = router;
